@@ -6,34 +6,33 @@ class UsersController < ApplicationController
 
   def index
     @users =User.paginate(page: params[:page])
+
   end
 
   def show 
   	@user = User.find(params[:id])
+    @entries = @user.entries.paginate(page: params[:page],per_page: 10)
   end
 
   def create
-  	@user = User.new(user_params)
-  	if @user.save
-      log_in @user
-      flash[:success]= "Welcome to DemoRails!"
-      redirect_to @user
-    else
-      render 'new'
-    end
+   @user = User.new(user_params)
+   if @user.save
+    log_in @user
+    flash[:success]= "Welcome to DemoRails!"
+    redirect_to @user
+  else
+    render 'new'
   end
-  private
+end
+def destroy
+  User.find(params[:id].destroy)
+  flash[:success] ="User delete"
+  redirect_to users_url
+end
+private
 
-  def user_params
-    params.require(:user).permit(:name, :email, :password,
-     :password_confirmation)
-  end
-
-  def logged_in_user
-    unless logged_in?
-      flash[:danger] = "Please log in."
-      redirect_to login_url
-    end
-    
-  end  
+def user_params
+  params.require(:user).permit(:name, :email, :password,
+   :password_confirmation)
+end
 end
