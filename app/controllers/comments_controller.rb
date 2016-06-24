@@ -8,6 +8,7 @@ class CommentsController < ApplicationController
 			flash[:success] = "Commented!"
 			redirect_to :back
 		else
+			flash[:danger] = "Comment too long"
 			redirect_to :back
 		end
 	end
