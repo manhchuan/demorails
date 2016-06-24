@@ -1,8 +1,9 @@
 <li id="entry-<%= entry.id %>">
 	<%= link_to gravatar_for(entry.user, size: 50), entry.user %>
 	<span class="user"><%= link_to entry.user.name, entry.user %></span>
-	<span class="title">Title:  <%= entry.title %></span>
-	<span class="content">Entry:  <%= entry.content %></span>
+	<br></br>
+	<span class="title">Title:    <%= entry.title %></span>
+	<span class="content">Entry:    <%= entry.content %></span>
 	<span class="timestamp">
 		Posted <%= time_ago_in_words(entry.created_at) %> ago.
 		<% if current_user?(entry.user) %>
@@ -10,4 +11,14 @@
 		data: { confirm: "You sure?" } %>
 		<% end %>
 	</span>
+	<div id="comments_<%= entry.id %>">
+		<% if entry.comments.any? %>
+		<%= render entry.comments,entry: entry %>
+		<%end%>
+	</div>
+	<% if logged_in? %>
+	<% if current_user.following?(entry.user) || current_user?(entry.user) %>
+	<%= render 'shared/comment_form', entry: entry %>
+	<% end %>
+	<%end%>
 </li>
