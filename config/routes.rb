@@ -21,6 +21,7 @@ Rails.application.routes.draw do
   resources :entries,          only: [:create, :destroy]
   resources :users
   resources :relationships,       only: [:create, :destroy]
+  resources :comments,            only: [:create,:destroy]
 
 
   # The priority is based upon order of creation: first created -> highest priority.
